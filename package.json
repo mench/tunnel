@@ -1,0 +1,12 @@
+{
+  "name": "tunnel",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces":[
+    "packages/*"
+  ],
+  "devDependencies": {
+    "ts-node": "^8.0.3",
+    "typescript": "^3.3.3333"
+  }
+}

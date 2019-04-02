@@ -1,0 +1,37 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+.cache/
+.idea/
+certs/
+dist/
+node_modules/
+*.iml
+*.ipr
+*.iws
+*.log
+yarn.lock
+users.json
+config.json
+
+# dependencies
+/node_modules
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+/.idea
+/.vscode
+*.iml
+*.ipr
+*.iws
