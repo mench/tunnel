@@ -1,7 +1,6 @@
 {
   "name": "@tunnels/server",
   "version": "1.0.0",
-  "private": true,
   "description": "Tunnel server",
   "dependencies": {
     "@tunnels/common": "*",

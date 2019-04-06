@@ -1,7 +1,6 @@
 {
   "name": "@tunnels/cli",
   "version": "1.0.0",
-  "private": true,
   "description": "Tunnel Cli",
   "dependencies": {
     "@tunnels/client": "*",
@@ -13,7 +12,7 @@
     "@types/node": "^11.13.0"
   },
   "bin": {
-    "tun": "./bin/tunnel.js"
+    "tunnel": "./bin/tunnel.js"
   },
   "main": "./index.js",
   "types": "./index.d.ts",
