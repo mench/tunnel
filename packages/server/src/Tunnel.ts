@@ -1,5 +1,5 @@
 import {RelayServer}             from "./Net";
-import {logger, LoggerInterface} from "@tunnel/common";
+import {logger, LoggerInterface} from "@tunnels/common";
 
 export class Tunnel<R extends RelayServer = RelayServer> {
 
@@ -11,7 +11,8 @@ export class Tunnel<R extends RelayServer = RelayServer> {
     constructor(
         public id:string,
         public internetPort:number,
-        public relay: R
+        public relay: R,
+        public username
     ) {
         this.internetPort = internetPort;
         this.relay = relay;

@@ -1,5 +1,5 @@
-import {Signal, signal}           from "@tunnel/common";
-import {logger, LoggerInterface,} from "@tunnel/common";
+import {Signal, signal}           from "@tunnels/common";
+import {logger, LoggerInterface,} from "@tunnels/common";
 import {Client}                   from "./Client";
 
 export class RelayClient {
@@ -55,7 +55,10 @@ export class RelayClient {
     }
 
     onClientClose() {
-        this.logger.debug('onClientClose', { endCalled: this.endCalled, retry: this.retry })
+        this.logger.debug('onClientClose', { endCalled: this.endCalled, retry: this.retry });
+        this.client.onClose.detachAll();
+        this.client.onBytes.detachAll();
+        this.client.onPair.detachAll();
         this.client = null;
 
         // Reconnect on connection loss
@@ -77,12 +80,15 @@ export class RelayClient {
 
     end() {
         this.logger.debug('end', { endCalled: this.endCalled })
-        this.endCalled = true
+        this.endCalled = true;
         try {
-            this.client.onClose.detachAll();
-            this.client.onBytes.detachAll();
-            this.client.onPair.detachAll();
-            this.client.relaySocket.destroy()
+            if( this.client ){
+                this.client.onClose.detachAll();
+                this.client.onBytes.detachAll();
+                this.client.onPair.detachAll();
+                this.client.relaySocket.destroy()
+            }
+
         } catch (err) {
             this.logger.debug('end:error: %o', err)
         }

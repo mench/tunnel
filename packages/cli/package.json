@@ -1,0 +1,25 @@
+{
+  "name": "@tunnels/cli",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tunnel Cli",
+  "dependencies": {
+    "@tunnels/client": "*",
+    "@tunnels/server": "*",
+    "@types/optimist": "^0.0.29",
+    "optimist": "^0.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^11.13.0"
+  },
+  "bin": {
+    "tun": "./bin/tunnel.js"
+  },
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "scripts": {
+    "build":"tsc",
+    "connect":"DEBUG=tunnel:* ts-node ./bin/tunnel.js connect --port=3000  --domain=sites.li:10443 --subdomain=armen --auth=armen:NC6aeiZPKmjioc9y68KW3",
+    "serve":"ts-node ./bin/tunnel.js serve"
+  }
+}

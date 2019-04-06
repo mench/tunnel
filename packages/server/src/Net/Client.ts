@@ -1,7 +1,7 @@
-import {logger, LoggerInterface} from "@tunnel/common";
+import {logger, LoggerInterface} from "@tunnels/common";
 import {Socket}                  from 'net';
-import {signal}                  from "@tunnel/common";
-import {Signal}                  from "@tunnel/common";
+import {signal}                  from "@tunnels/common";
+import {Signal}                  from "@tunnels/common";
 
 
 export class Client {
@@ -20,7 +20,7 @@ export class Client {
 
         this.logger.debug('constructor: %o', { options });
 
-        this.socket = opts.socket
+        this.socket = opts.socket;
         this.options = options;
 
         if (options.bufferData) {

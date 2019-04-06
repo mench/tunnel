@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "extends": "../common/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./lib",
+    "allowJs": false
+  },
+  "include": ["./src"]
+}

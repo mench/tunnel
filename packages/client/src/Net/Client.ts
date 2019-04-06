@@ -1,7 +1,7 @@
 import * as net                   from 'net';
 import * as tls                   from 'tls';
-import {Signal, signal}           from "@tunnel/common";
-import {logger, LoggerInterface,} from "@tunnel/common";
+import {Signal, signal}           from "@tunnels/common";
+import {logger, LoggerInterface,} from "@tunnels/common";
 
 export class Client {
 
@@ -19,7 +19,7 @@ export class Client {
     @signal
     readonly onBytes: Signal<(d: { tx, rx }) => any>;
 
-    @logger()
+    @logger('net:client')
     readonly logger: LoggerInterface;
 
     constructor(protected opts = {
@@ -27,7 +27,7 @@ export class Client {
         port: null,
         relayHost: null,
         relayPort: null
-    }, protected options:{[k:string]:any} = { tls: false }, index = 0) {
+    }, protected options:{[k:string]:any} = { tls: false }) {
         this.logger.debug('constructor: %o', { opts, options });
 
         this.opts = opts;

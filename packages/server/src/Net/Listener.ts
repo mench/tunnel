@@ -1,8 +1,8 @@
 import * as fs                   from 'fs';
 import * as net                  from 'net';
 import * as tls                  from 'tls';
-import {Signal, signal}          from "@tunnel/common";
-import {logger, LoggerInterface} from "@tunnel/common";
+import {Signal, signal}          from "@tunnels/common";
+import {logger, LoggerInterface} from "@tunnels/common";
 import {Server}                  from 'net';
 import {Client}                  from "./Client";
 
@@ -29,6 +29,9 @@ export class Listener {
         timeout?:any;
         internetListener?:any;
     } = { bufferData :true }) {
+        if( typeof this.options.bufferData=='undefined' ){
+            this.options.bufferData = true;
+        }
         this.logger.debug('constructor: %o', { opts, options })
 
         this.port = opts.port;
@@ -46,11 +49,7 @@ export class Listener {
         let server = null;
 
         if (this.options.tls === true) {
-            const tlsOptions = {
-                pfx: fs.readFileSync(this.options.pfx),
-                passphrase: this.options.passphrase
-            };
-            server = tls.createServer(tlsOptions, (socket) => {
+            server = tls.createServer((socket) => {
                 this.createClient(socket)
             })
         } else {

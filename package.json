@@ -1,5 +1,5 @@
 {
-  "name": "tunnel",
+  "name": "tunnels",
   "version": "1.0.0",
   "private": true,
   "workspaces":[
@@ -8,5 +8,13 @@
   "devDependencies": {
     "ts-node": "^8.0.3",
     "typescript": "^3.3.3333"
+  },
+  "scripts": {
+    "build-server": "yarn workspace @tunnels/server run build",
+    "build-client": "yarn workspace @tunnels/client run build",
+    "build-common": "yarn workspace @tunnels/common run build",
+    "build-admin": "yarn workspace @tunnels/admin run build",
+    "build-cli": "yarn workspace @tunnels/cli run build",
+    "build": "yarn run build-common && yarn run build-server && yarn run build-client && yarn run build-cli && yarn run build-admin"
   }
 }
