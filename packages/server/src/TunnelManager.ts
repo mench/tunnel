@@ -1,7 +1,7 @@
 import {logger, LoggerInterface} from "@tunnels/common";
 import {Tunnel}                  from "./Tunnel";
 import * as getAvailablePort     from "get-port";
-import {portValidator}           from "port-validator";
+
 import {RelayServer}             from "./Net";
 
 

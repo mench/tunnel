@@ -8,6 +8,7 @@ export class Config {
     public users: { [s: string]: string };
     public port: number = 8080;
     public address: string = '0.0.0.0';
+    public admin: string;
     public ssl: {
         port: number;
         enabled: boolean;

@@ -3,16 +3,13 @@
   "version": "1.0.0",
   "description": "Tunnel client",
   "dependencies": {
-    "@types/http-proxy": "^1.17.0",
-    "debug": "^4.1.1",
-    "get-port": "^3.2.0",
-    "http-proxy": "^1.17.0",
-    "port-validator": "^0.1.0-beta1"
+    "debug": "^4.1.1"
   },
   "main": "./index.js",
   "types": "./index.d.ts",
   "devDependencies": {
-    "@types/node": "^11.13.0"
+    "@types/node": "^11.13.0",
+    "typescript": "^3.4.2"
   },
   "scripts": {
     "build":"tsc"

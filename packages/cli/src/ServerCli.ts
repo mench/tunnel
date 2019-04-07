@@ -6,19 +6,19 @@ import * as Path from 'path';
 export class ServerCli {
     public options = optimist
         .usage('Command: serve [options]')
-        .options('config_dir', {
+        .options('config', {
             default:'../../config.json',
             describe: 'config path'
         });
 
     public async run(){
         const argv = this.options.argv;
-        if( !argv.config_dir ){
+        if( !argv.config ){
             this.help();
             console.error('config_dir is required');
             process.exit();
         }
-        const configPath = argv.config_dir;
+        const configPath = argv.config;
         const config = new Config();
         const dirname = Path.dirname(configPath);
         config.path = Path.resolve(configPath);

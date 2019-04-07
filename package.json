@@ -15,6 +15,13 @@
     "build-common": "yarn workspace @tunnels/common run build",
     "build-admin": "yarn workspace @tunnels/admin run build",
     "build-cli": "yarn workspace @tunnels/cli run build",
-    "build": "yarn run build-common && yarn run build-server && yarn run build-client && yarn run build-cli && yarn run build-admin"
+    "build": "yarn run build-common && yarn run build-server && yarn run build-client && yarn run build-cli && yarn run build-admin",
+
+    "release-server": "yarn workspace @tunnels/server run release",
+    "release-client": "yarn workspace @tunnels/client run release",
+    "release-common": "yarn workspace @tunnels/common run release",
+    "release-admin": "yarn workspace @tunnels/admin run release",
+    "release-cli": "yarn workspace @tunnels/cli run release",
+    "release": "yarn run release-common && yarn run release-server && yarn run release-client && yarn run release-cli && yarn run release-admin"
   }
 }

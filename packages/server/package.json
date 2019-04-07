@@ -4,16 +4,16 @@
   "description": "Tunnel server",
   "dependencies": {
     "@tunnels/common": "*",
-    "@types/http-proxy": "^1.17.0",
-    "@types/ws": "^6.0.1",
     "debug": "^4.1.1",
     "get-port": "^3.2.0",
     "http-proxy": "^1.17.0",
-    "port-validator": "^0.1.0-beta1",
     "ws": "^6.2.1"
   },
   "devDependencies": {
-    "@types/node": "^11.13.0"
+    "@types/http-proxy": "^1.17.0",
+    "@types/ws": "^6.0.1",
+    "@types/node": "^11.13.0",
+    "typescript": "^3.4.2"
   },
   "main": "./index.js",
   "types": "./index.d.ts",
