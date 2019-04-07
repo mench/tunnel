@@ -4,6 +4,8 @@ import {initialState} from "../index";
 
 export default (state = initialState.requests, action) => {
     switch (action.type) {
+        case ActionType.LOGOUT:
+            return initialState.requests;
         case ActionType.REMOVE_TUNNEL:
             return [];
         case ActionType.REQUESTS:

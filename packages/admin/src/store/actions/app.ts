@@ -1,9 +1,29 @@
-import {ActionType}  from "./ActionType";
+import {ActionType} from "./ActionType";
 
 export const init = () => ({
     type: ActionType.INIT
 });
-export const select = (id)=>({
+export const select = (id) => ({
     type: ActionType.SELECT,
-    payload:id
+    payload: id
+});
+
+export const logout = () => ({
+    type: ActionType.LOGOUT
+});
+export const saveUser = ({ username, password }) => ({
+    type: ActionType.SAVE_USER,
+    payload: { username, password }
+});
+export const updateUsers = (data) => ({
+    type: ActionType.UPDATE_USER,
+    payload: data
+});
+export const toggleUsers = (payload) => ({
+    type: ActionType.TOGGLE_USERS,
+    payload
+})
+export const deleteUser = (username) => ({
+    type: ActionType.DELETE_USER,
+    payload:username
 });

@@ -9,12 +9,14 @@ import {createSocketMiddleware} from "./middlewares/socket";
 
 export const initialState: State = {
     app: {
-        status: localStorage.getItem('auth')?'loading' :'unauthorized',
+        status: localStorage.getItem('tunnel-auth')?'loading' :'unauthorized',
         session: null,
         tunnels: [],
         selected: null,
         loadingRequests: false,
-        loadedRequests: false
+        loadedRequests: false,
+        users:[],
+        openUsers:false
     },
     requests: []
 };

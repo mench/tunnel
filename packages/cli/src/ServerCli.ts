@@ -21,11 +21,12 @@ export class ServerCli {
         const configPath = argv.config_dir;
         const config = new Config();
         const dirname = Path.dirname(configPath);
+        config.path = Path.resolve(configPath);
         Object.assign(config,JSON.parse(Fs.readFileSync(configPath, 'utf8')));
 
         if( config.ssl.enabled ){
-            config.ssl.cert = Fs.readFileSync(Path.resolve(dirname,String(config.ssl.cert)));
-            config.ssl.key = Fs.readFileSync(Path.resolve(dirname,String(config.ssl.key)));
+            config.cert = Fs.readFileSync(Path.resolve(dirname,String(config.ssl.cert)));
+            config.key = Fs.readFileSync(Path.resolve(dirname,String(config.ssl.key)));
         }
         const server = new Server(config);
         await server.run();

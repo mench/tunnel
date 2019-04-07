@@ -1,6 +1,7 @@
 export interface Tunnel {
     createdAt: string
     id: string
+    username: string
     internetPort: number
     relayPort: number
 }
@@ -41,10 +42,12 @@ export interface State {
             domain:string,
             connections:number
         },
+        users:string[],
         selected:string,
         loadingRequests:boolean,
         loadedRequests:boolean,
-        tunnels:Tunnel[]
+        tunnels:Tunnel[],
+        openUsers:boolean
     }
     requests:ReqInfo[]
 }

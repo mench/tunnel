@@ -23,6 +23,7 @@ export class Tunnel<R extends RelayServer = RelayServer> {
     toJSON(){
         return {
             id:this.id,
+            username:this.username,
             internetPort:this.internetPort,
             relayPort:this.relay.relayPort,
             createdAt:this.createdAt

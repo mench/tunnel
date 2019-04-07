@@ -1,5 +1,6 @@
 import {Server}       from "./Server";
 import * as WebSocket from 'ws'
+import {async}        from "q";
 
 export class ProxyRequests {
 
@@ -13,66 +14,83 @@ export class ProxyRequests {
         this.server.wss.on('connection', this.doWsConnect.bind(this));
     }
 
-    protected doWsConnect(ws, request) {
+    public authorize(request) {
+        const params = (): any => {
+            let q = request.url.split('?'), result = {};
+            if (q.length >= 2) {
+                q[1].split('&').forEach((item) => {
+                    try {
+                        result[item.split('=')[0]] = item.split('=')[1];
+                    } catch (e) {
+                        result[item.split('=')[0]] = '';
+                    }
+                })
+            }
+            return result;
+        };
+        const { username, password } = params();
+        if (!username) {
+            return false;
+        }
+        if (!password) {
+            return false;
+        }
+        if (this.server.config.users[username] !== password) {
+            return false;
+        }
+        return username;
+    }
+
+    protected doWsConnect(ws, request, username) {
         try {
-            const params = (): any => {
-                let q = request.url.split('?'), result = {};
-                if (q.length >= 2) {
-                    q[1].split('&').forEach((item) => {
-                        try {
-                            result[item.split('=')[0]] = item.split('=')[1];
-                        } catch (e) {
-                            result[item.split('=')[0]] = '';
-                        }
-                    })
-                }
-                return result;
-            };
-            const unauthorized = ()=>{
-                ws.send(JSON.stringify({
-                    event: "unauthorized",
-                    data: "wrong username or password"
-                }));
-            };
-
-            const { username, password } = params();
-            if (!username) {
-                return unauthorized();
-            }
-            if (!password) {
-                return unauthorized();
-            }
-            if (this.server.config.users[username] !== password) {
-                return unauthorized();
-            }
-
             const tunnels = this.server.manager.toJSON();
             ws.send(JSON.stringify({
                 event: "welcome",
                 data: {
                     session: {
-                        id: 'armen',
-                        domain: this.server.config.domain,
-                        connections: tunnels.length
+                        id: username,
+                        domain: this.server.config.domain
                     },
+                    users:this.server.config.getUserNames(),
                     tunnels: tunnels
                 }
             }));
-            ws.on('message', (message) => {
-                message = JSON.parse(message);
-                switch (message.event) {
-                    case 'ping':
-                        ws.send(JSON.stringify({
-                            event: "pong",
-                            data: message.data
-                        }));
-                        break;
-                    case 'select':
-                        ws.send(JSON.stringify({
-                            event: "requests",
-                            data: this.logs.filter(log => log.tunnel.id === message.data.id)
-                        }));
-                        break;
+            ws.on('message', async (message) => {
+                try {
+                    message = JSON.parse(message);
+                    switch (message.event) {
+                        case 'ping':
+                            ws.send(JSON.stringify({
+                                event: "pong",
+                                data: message.data
+                            }));
+                            break;
+                        case 'select':
+                            ws.send(JSON.stringify({
+                                event: "requests",
+                                data: this.logs.filter(log => log.tunnel.id === message.data.id)
+                            }));
+                            break;
+                        case 'save:user':
+                            const { username, password } = message.data;
+                            this.server.config.users[username] = password;
+                            await this.server.config.save();
+                            ws.send(JSON.stringify({
+                                event: "saved:user",
+                                data: this.server.config.getUserNames()
+                            }));
+                            break;
+                        case 'delete:user':
+                            delete this.server.config.users[message.data];
+                            await this.server.config.save();
+                            ws.send(JSON.stringify({
+                                event: "saved:user",
+                                data: this.server.config.getUserNames()
+                            }));
+                            break;
+                    }
+                }catch (e) {
+                    console.error(e)
                 }
             })
         } catch (e) {
@@ -93,9 +111,9 @@ export class ProxyRequests {
         const info = {
             id: `${Math.random().toString(32).substr(2)}`,
             username: req.auth,
-            createdAt:new Date().toISOString(),
-            tunnel:tunnel.toJSON(),
-            duration:null,
+            createdAt: new Date().toISOString(),
+            tunnel: tunnel.toJSON(),
+            duration: null,
             req: {
                 method: req.method,
                 path: req.url,
@@ -139,7 +157,7 @@ export class ProxyRequests {
     }
 
     public push(info) {
-        if( this.logs.length >= 1000 ){
+        if (this.logs.length >= 1000) {
             this.logs.unshift();
         }
         this.logs.push(info);

@@ -4,11 +4,24 @@ import {initialState} from "../index";
 
 export default (state = initialState.app, action) => {
     switch (action.type) {
-        case ActionType.INIT :
+        case ActionType.LOGOUT:
+            return {
+                ...initialState.app
+            };
+        case ActionType.SOCKET_CONNECTING :
             return {
                 ...state,
-                status:'loading'
+                status:'connecting'
             };
+        case ActionType.SOCKET_CLOSE :
+            if( state.status !== 'loaded' ){
+                return {
+                    ...state,
+                    status:'unauthorized'
+                };
+            }else{
+                return state;
+            }
         case ActionType.WELCOME :
             return {
                 ...state,
@@ -42,6 +55,16 @@ export default (state = initialState.app, action) => {
                 ...state,
                 loadedRequests:true,
                 loadingRequests:false
+            };
+        case ActionType.UPDATE_USER:
+            return {
+                ...state,
+               users:action.payload
+            };
+        case ActionType.TOGGLE_USERS:
+            return {
+                ...state,
+                openUsers:action.payload
             };
         default:
             return state

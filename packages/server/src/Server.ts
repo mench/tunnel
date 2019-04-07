@@ -43,7 +43,7 @@ export class Server {
     }
 
     public run() {
-        const { port, ssl } = this.config;
+        const { port, ssl, cert, key } = this.config;
         this.server = http.createServer();
         this.server.on('request', this.doRequest.bind(this));
         this.server.on('upgrade', this.doUpgrade.bind(this));
@@ -51,8 +51,8 @@ export class Server {
         console.log('Server listening on port', this.config.port);
         if (ssl.enabled) {
             this.secureServer = https.createServer({
-                key: ssl.key,
-                cert: ssl.cert
+                key: key,
+                cert: cert
             });
             this.secureServer.on('request', this.doRequest.bind(this));
             this.secureServer.on('upgrade', this.doUpgrade.bind(this));
@@ -143,9 +143,14 @@ export class Server {
 
     protected doUpgrade(req, socket, head) {
         if (this.hostname(req.headers.host) === this.config.domain) {
-            this.wss.handleUpgrade(req, socket, head, (ws) => {
-                this.wss.emit('connection', ws, req);
-            });
+            const auth = this.proxyRequests.authorize(req);
+            if (!auth) {
+                socket.destroy();
+            } else {
+                this.wss.handleUpgrade(req, socket, head, (ws) => {
+                    this.wss.emit('connection', ws, req, auth);
+                });
+            }
         } else {
             let tunnel = this.getTunnelByHost(req.headers.host);
             if (tunnel) {

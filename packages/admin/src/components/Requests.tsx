@@ -20,6 +20,7 @@ class Requests extends PureComponent<{
                 showHeader={true}
                 pagination={false}
                 loading={loading}
+
                 expandedRowRender={(record:any)=><Info {...requests.find(i=>i.id===record.key)} />}
                 columns={[
                     {

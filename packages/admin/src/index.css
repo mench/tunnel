@@ -54,3 +54,12 @@ code {
 .login-modal .ant-modal-close-x{
   display: none!important;
 }
+.ant-statistic-content{
+  font-size: 16px;
+}
+
+.editable-row .ant-form-explain {
+  position: absolute;
+  font-size: 12px;
+  margin-top: -4px;
+}

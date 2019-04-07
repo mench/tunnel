@@ -1,17 +1,18 @@
-import React, {PureComponent}      from 'react';
-import {Fragment}                  from 'react';
-import {Layout, Menu, Icon, Modal} from 'antd';
-import {Avatar}                    from 'antd';
-import {Table}                     from 'antd';
-import {Badge}                     from 'antd';
-import {PageHeader}                from 'antd';
-import Requests                    from "./components/Requests";
-import {connect}                   from "react-redux";
-import {State, Tunnel}             from "./types/State";
-import {Loader}                    from "./components/Loader";
-import {select}                    from "./store/actions/app";
-import {getSelectedTunnel}         from "./store/selectors/app";
-import Login                       from "./components/Login";
+import React, {PureComponent}                                    from 'react';
+import {Fragment}                                                from 'react';
+import {Layout, Menu, Icon, Row, Col, Statistic, Card, Dropdown} from 'antd';
+import {Avatar}                                                  from 'antd';
+import {Table}                       from 'antd';
+import {Badge}                       from 'antd';
+import {PageHeader}                  from 'antd';
+import Requests                      from "./components/Requests";
+import {connect}                     from "react-redux";
+import {State, Tunnel}               from "./types/State";
+import {Loader}                      from "./components/Loader";
+import {logout, select, toggleUsers} from "./store/actions/app";
+import {getSelectedTunnel}           from "./store/selectors/app";
+import Login                         from "./components/Login";
+import Users                         from "./components/Users";
 
 const {
     Content, Sider,
@@ -23,14 +24,16 @@ class App extends PureComponent<{
     unauthorized: boolean,
     session: {
         id: string,
-        domain: string,
-        connections: number
+        domain: string
     },
     tunnels: Tunnel[],
     selected: Tunnel
     select: typeof select,
+    logout: typeof logout,
+    toggleUsers: typeof toggleUsers,
     loadedRequests: boolean
     loadingRequests: boolean
+    openUsers: boolean
 }> {
 
     onSelect = ({ key }) => {
@@ -38,7 +41,19 @@ class App extends PureComponent<{
     };
 
     render() {
-        const { loading, session, tunnels, selected, loadedRequests, loadingRequests } = this.props;
+        const { loading, session, tunnels, selected, loadedRequests, loadingRequests, logout,openUsers,toggleUsers } = this.props;
+        const options = (
+            <Menu>
+                <Menu.Item key="1" onClick={()=>toggleUsers(true)}>
+                    <Icon type="usergroup-add"/>
+                    <span className="nav-text">Users</span>
+                </Menu.Item>
+                <Menu.Item key="0" onClick={logout}>
+                    <Icon type="logout"/>
+                    <span className="nav-text">Logout</span>
+                </Menu.Item>
+            </Menu>
+        );
         return (
             <Layout style={{ height: "100%" }}>
                 {!loading && !!session &&
@@ -54,6 +69,13 @@ class App extends PureComponent<{
                             </Avatar>
                             <span
                                 style={{ marginLeft: 10 }}>{session.id.charAt(0).toUpperCase() + session.id.slice(1).toLowerCase()}</span>
+                            <Dropdown overlay={options} trigger={['click']}>
+                                <a style={{ float: 'right', fontSize: 18, color: '#555' }} className="ant-dropdown-link"
+                                   href="javascript:;">
+                                    <Icon type="setting"/>
+                                </a>
+                            </Dropdown>
+
                         </div>
                         <Table showHeader={false}
                                pagination={false}
@@ -66,10 +88,6 @@ class App extends PureComponent<{
                                    key: '2',
                                    name: 'DOMAIN',
                                    value: session.domain
-                               }, {
-                                   key: '3',
-                                   name: 'CONNECTIONS',
-                                   value: session.connections
                                }]} size="middle"/>
                         <Menu theme="light" mode="inline" onSelect={this.onSelect}>
                             {
@@ -84,20 +102,36 @@ class App extends PureComponent<{
                         </Menu>
                     </Sider>
                     <Layout>
-                        <Content style={{ margin: '24px 16px 0' }}>
+                        <Content style={{ margin: '5px 16px 0' }}>
                             {!!selected &&
-                            <PageHeader
-                                title="Requests"
-                                subTitle={<React.Fragment>
-                                    Domains [ <a href={`https://${selected.id}.${session.domain}`}
-                                                 target="_blank">{`https://${selected.id}.${session.domain}`}</a>
-                                    &nbsp; &nbsp;
-                                    <a href={`http://${selected.id}.${session.domain}`}
-                                       target="_blank">{`http://${selected.id}.${session.domain}`}</a> ]
-                                </React.Fragment>}
-                            />
+                            <React.Fragment>
+                                <Card>
+                                    <Row>
+                                        <Col span={4}>
+                                            <Statistic title="User" value={selected.username}/>
+                                        </Col>
+                                        <Col span={4}>
+                                            <Statistic title="Http" valueRender={() => <a
+                                                href={`http://${selected.id}.${session.domain}`}
+                                                target="_blank">{`http://${selected.id}.${session.domain}`}</a>}/>
+                                        </Col>
+                                        <Col span={4}>
+                                            <Statistic title="Https" valueRender={() => <a
+                                                href={`https://${selected.id}.${session.domain}`}
+                                                target="_blank">{`http://${selected.id}.${session.domain}`}</a>}/>
+                                        </Col>
+                                        <Col span={4}>
+                                            <Statistic title="Internet Port" value={selected.internetPort}/>
+                                        </Col>
+                                        <Col span={4}>
+                                            <Statistic title="Relay Port" value={selected.relayPort}/>
+                                        </Col>
+                                    </Row>
+                                </Card>
+
+                            </React.Fragment>
                             }
-                            {(loadingRequests || loadedRequests )&&
+                            {(loadingRequests || loadedRequests) &&
                             <React.Fragment>
                                 <div>&nbsp;</div>
                                 <div style={{ padding: 24, background: '#fff', height: 'auto' }}>
@@ -109,24 +143,15 @@ class App extends PureComponent<{
                     </Layout>
                 </Fragment>
                 }
-                {!session &&
+                {!session && !loading &&
                 <Layout>
                     <Content style={{ margin: '24px 16px 0' }}>
-                        <Modal
-                            className={"login-modal"}
-                            width={350}
-                            footer={null}
-                            centered={true}
-                            title="Login"
-                            visible={true}
-                        >
-                            <Login />
-                        </Modal>
+                        <Login/>
                     </Content>
                 </Layout>
                 }
                 {loading && <Loader/>}
-
+                {openUsers && <Users/>}
             </Layout>
         );
     }
@@ -140,4 +165,5 @@ export default connect((state: State) => ({
     tunnels: state.app.tunnels,
     loadedRequests: state.app.loadedRequests,
     loadingRequests: state.app.loadingRequests,
-}), { select })(App);
+    openUsers: state.app.openUsers,
+}), { select, logout, toggleUsers })(App);
