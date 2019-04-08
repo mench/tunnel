@@ -49,7 +49,6 @@ export function createSocketMiddleware() {
         });
 
         return action => {
-            console.info(action)
             if (action.type === ActionType.SOCKET_CLOSE) {
                 if (getState().app.status === 'loaded') {
                     Modal.warning({

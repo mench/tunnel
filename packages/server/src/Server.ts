@@ -54,6 +54,7 @@ export class Server {
     public run() {
         const { port, ssl, cert, key } = this.config;
         this.server = http.createServer();
+        this.server.on('error',this.doError.bind(this));
         this.server.on('request', this.doRequest.bind(this));
         this.server.on('upgrade', this.doUpgrade.bind(this));
         this.server.listen(port, this.config.address);
@@ -65,10 +66,15 @@ export class Server {
             });
             this.secureServer.on('request', this.doRequest.bind(this));
             this.secureServer.on('upgrade', this.doUpgrade.bind(this));
+            this.secureServer.on('error',this.doError.bind(this));
             this.secureServer.listen(ssl.port);
             console.log('Secure server listening on port', this.config.ssl.port);
         }
         return this
+    }
+
+    async doError(err){
+        console.error(err)
     }
 
     get id(): Pattern<any> {

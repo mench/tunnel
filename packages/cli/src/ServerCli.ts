@@ -39,6 +39,11 @@ export class ServerCli {
         }
         const server = new Server(config);
         await server.run();
+        const close = async ()=>{
+           server.close();
+        };
+        process.on('SIGINT', close);
+        process.on('SIGTERM', close);
     }
 
     public help(){
