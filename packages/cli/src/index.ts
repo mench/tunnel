@@ -18,9 +18,9 @@ class Cli {
     async run() {
         switch (this.command) {
             case 'serve':
-            return await Cli.serve();
+            return  Cli.serve();
             case 'connect':
-                return await Cli.connect();
+                return Cli.connect();
             default:{
                 optimist.usage('Usage: use "connect" or "serve" commands. Ex: tunnel connect [options]')
                     .showHelp();

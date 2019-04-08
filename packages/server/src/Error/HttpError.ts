@@ -3,5 +3,6 @@ export class HttpError extends Error{
     constructor(httpCode,message){
         super(message);
         Object.setPrototypeOf(this, new.target.prototype);
+        this.httpCode = httpCode;
     }
 }

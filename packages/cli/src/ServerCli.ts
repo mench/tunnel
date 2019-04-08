@@ -38,12 +38,7 @@ export class ServerCli {
             config.key = Fs.readFileSync(Path.resolve(dirname,String(config.ssl.key)));
         }
         const server = new Server(config);
-        await server.run();
-        const close = async ()=>{
-           server.close();
-        };
-        process.on('SIGINT', close);
-        process.on('SIGTERM', close);
+        return server.run();
     }
 
     public help(){
