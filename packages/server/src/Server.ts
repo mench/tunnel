@@ -67,7 +67,7 @@ export class Server {
             this.secureServer.on('request', this.doRequest.bind(this));
             this.secureServer.on('upgrade', this.doUpgrade.bind(this));
             this.secureServer.on('error',this.doError.bind(this));
-            this.secureServer.listen(ssl.port);
+            this.secureServer.listen(ssl.port,this.config.address);
             console.log('Secure server listening on port', this.config.ssl.port);
         }
         return this
