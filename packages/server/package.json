@@ -7,17 +7,19 @@
     "debug": "^4.1.1",
     "get-port": "^3.2.0",
     "http-proxy": "^1.17.0",
+    "node-static": "^0.7.11",
     "ws": "^6.2.1"
   },
   "devDependencies": {
     "@types/http-proxy": "^1.17.0",
-    "@types/ws": "^6.0.1",
     "@types/node": "^11.13.0",
+    "@types/node-static": "^0.7.3",
+    "@types/ws": "^6.0.1",
     "typescript": "^3.4.2"
   },
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
-    "build":"tsc"
+    "build": "tsc"
   }
 }

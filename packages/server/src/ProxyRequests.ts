@@ -1,6 +1,8 @@
 import {Server}       from "./Server";
 import * as WebSocket from 'ws'
-import {async}        from "q";
+import * as Http      from 'http';
+import * as Https     from 'https';
+import {URL}          from 'url';
 
 export class ProxyRequests {
 
@@ -51,7 +53,7 @@ export class ProxyRequests {
                         id: username,
                         domain: this.server.config.domain
                     },
-                    users:this.server.config.getUserNames(),
+                    users: this.server.config.getUserNames(),
                     tunnels: tunnels
                 }
             }));
@@ -88,8 +90,11 @@ export class ProxyRequests {
                                 data: this.server.config.getUserNames()
                             }));
                             break;
+                        case 'flush':
+                            this.clear(Object(message.data).id);
+                            break;
                     }
-                }catch (e) {
+                } catch (e) {
                     console.error(e)
                 }
             })
@@ -162,5 +167,10 @@ export class ProxyRequests {
         }
         this.logs.push(info);
         this.broadcast('request', info);
+    }
+
+    public clear(subdomain) {
+        this.logs = this.logs.filter(log => log.tunnel.id !== subdomain);
+        this.broadcast('clear', this.logs);
     }
 }

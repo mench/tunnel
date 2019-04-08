@@ -18,8 +18,8 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
-    "build":"tsc",
-    "connect":"DEBUG=tunnel:* ts-node ./src/index connect --port=3000  --domain=sites.li:10443 --subdomain=armen --auth=armen:NC6aeiZPKmjioc9y68KW3",
-    "serve":"ts-node ./src/index serve"
+    "build": "tsc",
+    "connect": "DEBUG=tunnel:* ts-node ./src/index connect --port=3000  --domain=sites.li:10443 --subdomain=armen --auth=armen:NC6aeiZPKmjioc9y68KW3",
+    "serve": "ts-node ./src/index serve"
   }
 }

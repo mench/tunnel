@@ -15,6 +15,8 @@ export enum ActionType {
     CREATE_TUNNEL = 'CREATE_TUNNEL',
     REMOVE_TUNNEL = 'REMOVE_TUNNEL',
     SELECT = 'SELECT',
+    FLUSH = 'FLUSH',
+    CLEAR = 'CLEAR',
     REQUESTS = 'REQUESTS',
     REQUEST = 'REQUEST',
 }

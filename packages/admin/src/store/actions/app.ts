@@ -22,8 +22,12 @@ export const updateUsers = (data) => ({
 export const toggleUsers = (payload) => ({
     type: ActionType.TOGGLE_USERS,
     payload
-})
+});
 export const deleteUser = (username) => ({
     type: ActionType.DELETE_USER,
     payload:username
+});
+export const clearRequests = (subdomain) => ({
+    type: ActionType.FLUSH,
+    payload:subdomain
 });

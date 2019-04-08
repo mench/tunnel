@@ -20,7 +20,7 @@ export class Config {
     };
 
     async save() {
-        const { cert, key, ...config } = this;
+        const { cert, key, path, admin, ...config } = this;
         return writeFile(this.path, JSON.stringify(config), { encoding: 'utf8' }, console.info);
     }
 

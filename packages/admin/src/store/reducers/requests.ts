@@ -10,6 +10,8 @@ export default (state = initialState.requests, action) => {
             return [];
         case ActionType.REQUESTS:
             return [...action.payload];
+        case ActionType.CLEAR:
+            return action.payload;
         case ActionType.REQUEST:
             return [
                 action.payload,

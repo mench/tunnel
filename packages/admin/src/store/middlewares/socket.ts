@@ -12,6 +12,7 @@ export function createSocketMiddleware() {
     return ({ getState, dispatch }) => next => {
         const url = process.env.NODE_ENV === 'production' ? `wss://${window.location.hostname}` : 'wss://sites.li:10443';
         const ws = new Socket(url);
+
         ws.onConnecting.attach(() => dispatch(connecting()));
         ws.onOpen.attach(() => dispatch(open()));
         ws.onClose.attach(() => dispatch(close()));
@@ -34,6 +35,9 @@ export function createSocketMiddleware() {
                     case 'request':
                         dispatch({ type: ActionType.REQUEST, payload: payload.data });
                         break;
+                    case 'clear':
+                        dispatch({ type: ActionType.CLEAR, payload: payload.data });
+                        break;
                     case 'saved:user':
                         message.success('users are successfully updated');
                         dispatch({ type: ActionType.UPDATE_USER, payload: payload.data })
@@ -46,11 +50,11 @@ export function createSocketMiddleware() {
 
         return action => {
             console.info(action)
-            if( action.type === ActionType.SOCKET_CLOSE ){
+            if (action.type === ActionType.SOCKET_CLOSE) {
                 if (getState().app.status === 'loaded') {
                     Modal.warning({
-                        okText:"Reload",
-                        onOk:()=>window.location.reload(),
+                        okText: "Reload",
+                        onOk: () => window.location.reload(),
                         title: 'Socket connection lost',
                         content: 'please reload the page',
                     });
@@ -80,6 +84,14 @@ export function createSocketMiddleware() {
                     ws.send({
                         event: 'delete:user',
                         data: action.payload
+                    });
+                    break;
+                case ActionType.FLUSH:
+                    ws.send({
+                        event: 'flush',
+                        data: {
+                            id:action.payload
+                        }
                     });
                     break;
                 case ActionType.SELECT:

@@ -1,18 +1,18 @@
-import React, {PureComponent}                                    from 'react';
-import {Fragment}                                                from 'react';
-import {Layout, Menu, Icon, Row, Col, Statistic, Card, Dropdown} from 'antd';
-import {Avatar}                                                  from 'antd';
-import {Table}                       from 'antd';
-import {Badge}                       from 'antd';
-import {PageHeader}                  from 'antd';
-import Requests                      from "./components/Requests";
-import {connect}                     from "react-redux";
-import {State, Tunnel}               from "./types/State";
-import {Loader}                      from "./components/Loader";
-import {logout, select, toggleUsers} from "./store/actions/app";
-import {getSelectedTunnel}           from "./store/selectors/app";
-import Login                         from "./components/Login";
-import Users                         from "./components/Users";
+import React, {PureComponent}                                            from 'react';
+import {Fragment}                                                        from 'react';
+import {Layout, Menu, Icon, Row, Col, Statistic, Card, Dropdown, Button} from 'antd';
+import {Avatar}                                                          from 'antd';
+import {Table}                                                           from 'antd';
+import {Badge}                                                           from 'antd';
+import {PageHeader}                                                      from 'antd';
+import Requests                                                          from "./components/Requests";
+import {connect}                                                         from "react-redux";
+import {State, Tunnel}                                                   from "./types/State";
+import {Loader}                                                          from "./components/Loader";
+import {clearRequests, logout, select, toggleUsers}                      from "./store/actions/app";
+import {getSelectedTunnel}                                               from "./store/selectors/app";
+import Login                                                             from "./components/Login";
+import Users                                                             from "./components/Users";
 
 const {
     Content, Sider,
@@ -31,6 +31,7 @@ class App extends PureComponent<{
     select: typeof select,
     logout: typeof logout,
     toggleUsers: typeof toggleUsers,
+    clearRequests: typeof clearRequests,
     loadedRequests: boolean
     loadingRequests: boolean
     openUsers: boolean
@@ -41,10 +42,21 @@ class App extends PureComponent<{
     };
 
     render() {
-        const { loading, session, tunnels, selected, loadedRequests, loadingRequests, logout,openUsers,toggleUsers } = this.props;
+        const {
+            loading,
+            session, tunnels,
+            selected,
+            loadedRequests,
+            loadingRequests,
+            logout,
+            openUsers,
+            toggleUsers,
+            clearRequests
+        } = this.props;
+
         const options = (
             <Menu>
-                <Menu.Item key="1" onClick={()=>toggleUsers(true)}>
+                <Menu.Item key="1" onClick={() => toggleUsers(true)}>
                     <Icon type="usergroup-add"/>
                     <span className="nav-text">Users</span>
                 </Menu.Item>
@@ -118,7 +130,7 @@ class App extends PureComponent<{
                                         <Col span={4}>
                                             <Statistic title="Https" valueRender={() => <a
                                                 href={`https://${selected.id}.${session.domain}`}
-                                                target="_blank">{`http://${selected.id}.${session.domain}`}</a>}/>
+                                                target="_blank">{`https://${selected.id}.${session.domain}`}</a>}/>
                                         </Col>
                                         <Col span={4}>
                                             <Statistic title="Internet Port" value={selected.internetPort}/>
@@ -135,6 +147,15 @@ class App extends PureComponent<{
                             <React.Fragment>
                                 <div>&nbsp;</div>
                                 <div style={{ padding: 24, background: '#fff', height: 'auto' }}>
+                                    <div style={{ textAlign: 'right', margin: 5 }}>
+                                        <Button
+                                            onClick={()=>clearRequests(selected.id)}
+                                            type="default"
+                                        >
+                                            <Icon type="delete"/>
+                                            Clear
+                                        </Button>
+                                    </div>
                                     <Requests/>
                                 </div>
                             </React.Fragment>
@@ -166,4 +187,4 @@ export default connect((state: State) => ({
     loadedRequests: state.app.loadedRequests,
     loadingRequests: state.app.loadingRequests,
     openUsers: state.app.openUsers,
-}), { select, logout, toggleUsers })(App);
+}), { select, logout, toggleUsers, clearRequests })(App);

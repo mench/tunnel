@@ -17,6 +17,9 @@ export const getSelectedTunnel = createSelector(
 export const getSelectedRequests = createSelector(
     getState,
     (state) => {
-        return state.requests.filter(r => r.tunnel.id === state.app.selected).sort(a=>-1* new Date(a.createdAt).getTime());
+        return state
+            .requests
+            .filter(r => r.tunnel.id === state.app.selected)
+            .sort((a,b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }
 );
