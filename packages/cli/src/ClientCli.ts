@@ -53,7 +53,7 @@ export class ClientCli {
 
         console.info("http : ",client.http);
         console.info("https: ",client.https);
-        console.info("admin: ",client.url);
+        console.info("admin: ",`http${client.ssl ? 's' : ''}://${client.domain}`);
         const close = async ()=>{
             await client.close();
             console.log('  Tunnel closed.')
