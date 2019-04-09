@@ -60,7 +60,7 @@ export class ClientCli {
                 domain:client.domain,
                 internetPort:client.internetPort,
                 relayPort:client.relayPort,
-                createdAt:new Date(client.createdAt)
+                createdAt:new Date(client.createdAt).toLocaleString()
             }
         ]);
         const close = async ()=>{
