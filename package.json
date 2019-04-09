@@ -10,6 +10,8 @@
     "typescript": "^3.4.2"
   },
   "scripts": {
+    "serve": "tunnel serve --config=./config.json",
+
     "build-server": "yarn workspace @tunnels/server run build",
     "build-client": "yarn workspace @tunnels/client run build",
     "build-common": "yarn workspace @tunnels/common run build",

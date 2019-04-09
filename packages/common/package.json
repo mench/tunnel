@@ -1,6 +1,6 @@
 {
   "name": "@tunnels/common",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Tunnel client",
   "dependencies": {
     "debug": "^4.1.1"
@@ -12,6 +12,7 @@
     "typescript": "^3.4.2"
   },
   "scripts": {
-    "build":"tsc"
+    "build":"tsc",
+    "release": "npm publish --registry=http://packs.sites.li"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@tunnels/server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Tunnel server",
   "dependencies": {
     "@tunnels/common": "*",
@@ -20,6 +20,7 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "release": "npm publish --registry=http://packs.sites.li"
   }
 }
