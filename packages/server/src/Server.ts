@@ -58,7 +58,6 @@ export class Server {
         this.server.on('request', this.doRequest.bind(this));
         this.server.on('upgrade', this.doUpgrade.bind(this));
         this.server.listen(port, this.config.address);
-        console.log('Server listening on port', this.config.port);
         if (ssl.enabled) {
             this.secureServer = https.createServer({
                 key: key,
@@ -68,7 +67,6 @@ export class Server {
             this.secureServer.on('upgrade', this.doUpgrade.bind(this));
             this.secureServer.on('error',this.doError.bind(this));
             this.secureServer.listen(ssl.port,this.config.address);
-            console.log('Secure server listening on port', this.config.ssl.port);
         }
         return this
     }

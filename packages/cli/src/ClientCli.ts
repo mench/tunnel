@@ -1,6 +1,7 @@
 import * as optimist from "optimist";
 import {Client}      from "@tunnels/client";
 import {toBool}      from "@tunnels/common";
+import {Paint}       from "./Paint";
 
 export class ClientCli {
 
@@ -50,10 +51,18 @@ export class ClientCli {
             subdomain:argv.subdomain
         });
         await client.create();
-
-        console.info("http : ",client.http);
-        console.info("https: ",client.https);
-        console.info("admin: ",`http${client.ssl ? 's' : ''}://${client.domain}`);
+        console.info(Paint.cyan("Forwarding\n"));
+        console.info(Paint.bold("http : "),client.http,'-->',`localhost:${client.port}`);
+        console.info(Paint.bold("https: "),client.https,'-->',`localhost:${client.port}`);
+        console.info(Paint.bold("admin: "),`http${client.ssl ? 's' : ''}://${client.domain}`);
+        console.table([
+            {
+                domain:client.domain,
+                internetPort:client.internetPort,
+                relayPort:client.relayPort,
+                createdAt:new Date(client.createdAt)
+            }
+        ]);
         const close = async ()=>{
             await client.close();
             console.log('  Tunnel closed.')

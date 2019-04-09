@@ -1,7 +1,8 @@
 import * as optimist    from "optimist";
 import {Config, Server} from "@tunnels/server";
-import * as Fs from 'fs';
-import * as Path from 'path';
+import * as Fs          from 'fs';
+import * as Path        from 'path';
+import {Paint}          from "./Paint";
 
 export class ServerCli {
     public options = optimist
@@ -38,7 +39,11 @@ export class ServerCli {
             config.key = Fs.readFileSync(Path.resolve(dirname,String(config.ssl.key)));
         }
         const server = new Server(config);
-        return server.run();
+        server.run();
+        console.log(Paint.green('Server listening on port: '), Paint.bold(config.port));
+        if( config.ssl.enabled ){
+            console.log(Paint.green('Secure Server listening on port: '), Paint.bold(config.ssl.port));
+        }
     }
 
     public help(){
