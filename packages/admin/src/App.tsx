@@ -3,16 +3,16 @@ import {Fragment}                                                        from 'r
 import {Layout, Menu, Icon, Row, Col, Statistic, Card, Dropdown, Button} from 'antd';
 import {Avatar}                                                          from 'antd';
 import {Table}                                                           from 'antd';
-import {Badge}                                                           from 'antd';
-import {PageHeader}                                                      from 'antd';
-import Requests                                                          from "./components/Requests";
-import {connect}                                                         from "react-redux";
-import {State, Tunnel}                                                   from "./types/State";
-import {Loader}                                                          from "./components/Loader";
-import {clearRequests, logout, select, toggleUsers}                      from "./store/actions/app";
-import {getSelectedTunnel}                                               from "./store/selectors/app";
-import Login                                                             from "./components/Login";
-import Users                                                             from "./components/Users";
+import {Badge}                                                    from 'antd';
+import {PageHeader}                                               from 'antd';
+import Requests                                                   from "./components/Requests";
+import {connect}                                                  from "react-redux";
+import {State, Tunnel}                                            from "./types/State";
+import {Loader}                                                   from "./components/Loader";
+import {clearRequests, loadRequests, logout, select, toggleUsers} from "./store/actions/app";
+import {getSelectedTunnel}                                        from "./store/selectors/app";
+import Login                                                      from "./components/Login";
+import Users                                                      from "./components/Users";
 
 const {
     Content, Sider,
@@ -32,6 +32,7 @@ class App extends PureComponent<{
     logout: typeof logout,
     toggleUsers: typeof toggleUsers,
     clearRequests: typeof clearRequests,
+    loadRequests: typeof loadRequests,
     loadedRequests: boolean
     loadingRequests: boolean
     openUsers: boolean
@@ -51,7 +52,8 @@ class App extends PureComponent<{
             logout,
             openUsers,
             toggleUsers,
-            clearRequests
+            clearRequests,
+            loadRequests
         } = this.props;
 
         const options = (
@@ -146,17 +148,8 @@ class App extends PureComponent<{
                             {(loadingRequests || loadedRequests) &&
                             <React.Fragment>
                                 <div>&nbsp;</div>
-                                <div style={{ padding: 24, background: '#fff', height: 'auto' }}>
-                                    <div style={{ textAlign: 'right', margin: 5 }}>
-                                        <Button
-                                            onClick={()=>clearRequests(selected.id)}
-                                            type="default"
-                                        >
-                                            <Icon type="delete"/>
-                                            Clear
-                                        </Button>
-                                    </div>
-                                    <Requests/>
+                                <div style={{ paddingLeft: 24,paddingRight:24, background: '#fff', height: 'auto' }}>
+                                    <Requests onClear={()=>clearRequests(selected.id)} onLoadMore={()=>loadRequests(selected.id)}/>
                                 </div>
                             </React.Fragment>
                             }
@@ -187,4 +180,4 @@ export default connect((state: State) => ({
     loadedRequests: state.app.loadedRequests,
     loadingRequests: state.app.loadingRequests,
     openUsers: state.app.openUsers,
-}), { select, logout, toggleUsers, clearRequests })(App);
+}), { select, logout, toggleUsers, clearRequests, loadRequests })(App);

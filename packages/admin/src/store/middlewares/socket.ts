@@ -35,6 +35,9 @@ export function createSocketMiddleware() {
                     case 'request':
                         dispatch({ type: ActionType.REQUEST, payload: payload.data });
                         break;
+                    case 'loaded:requests':
+                        dispatch({ type: ActionType.LOADED_REQUESTS, payload: payload.data });
+                        break;
                     case 'clear':
                         dispatch({ type: ActionType.CLEAR, payload: payload.data });
                         break;
@@ -98,6 +101,15 @@ export function createSocketMiddleware() {
                         event: 'select',
                         data: {
                             id: action.payload
+                        }
+                    });
+                    break;
+                case ActionType.LOAD_REQUESTS:
+                    ws.send({
+                        event: 'load:requests',
+                        data: {
+                            id: action.payload,
+                            page:getState().requests.page + 1
                         }
                     });
                     break;

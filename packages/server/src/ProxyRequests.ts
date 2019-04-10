@@ -1,8 +1,5 @@
 import {Server}       from "./Server";
-import * as WebSocket from 'ws'
-import * as Http      from 'http';
-import * as Https     from 'https';
-import {URL}          from 'url';
+import * as WebSocket from 'ws';
 
 export class ProxyRequests {
 
@@ -70,7 +67,13 @@ export class ProxyRequests {
                         case 'select':
                             ws.send(JSON.stringify({
                                 event: "requests",
-                                data: this.logs.filter(log => log.tunnel.id === message.data.id)
+                                data: this.loadRequests(message.data.id)
+                            }));
+                            break;
+                        case 'load:requests':
+                            ws.send(JSON.stringify({
+                                event: "loaded:requests",
+                                data: this.loadRequests(message.data.id, message.data.page, message.data.size || 20)
                             }));
                             break;
                         case 'save:user':
@@ -101,6 +104,21 @@ export class ProxyRequests {
         } catch (e) {
             console.error(e);
         }
+    }
+
+    public loadRequests(tunnelId, page = 1, size = 20) {
+        const paginate = (array, page_size, page_number) => {
+            --page_number;
+            return array.slice(page_number * page_size, (page_number + 1) * page_size);
+        };
+        let logs = this.logs.filter(log => log.tunnel.id === tunnelId)
+            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        return {
+            page,
+            data: paginate(logs, size, page),
+            total: logs.length
+        }
+
     }
 
     public broadcast(event, data) {
@@ -154,7 +172,6 @@ export class ProxyRequests {
         proxyRes.on('end', () => {
             info.res.body = Buffer.concat(chunks).toString('base64');
             info.duration = new Date().getTime() - new Date(info.createdAt).getTime();
-            console.info("Response Complete", info.id);
             res.end();
             this.push(info);
         });
@@ -170,6 +187,10 @@ export class ProxyRequests {
 
     public clear(subdomain) {
         this.logs = this.logs.filter(log => log.tunnel.id !== subdomain);
-        this.broadcast('clear', this.logs);
+        this.broadcast('clear', {
+            total: 0,
+            data: [],
+            page: 1
+        });
     }
 }

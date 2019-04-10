@@ -66,6 +66,16 @@ export default (state = initialState.app, action) => {
                 ...state,
                 openUsers:action.payload
             };
+        case ActionType.LOAD_REQUESTS:
+            return {
+                ...state,
+                loadingMore:true
+            };
+        case ActionType.LOADED_REQUESTS:
+            return {
+                ...state,
+                loadingMore:false
+            };
         default:
             return state
     }

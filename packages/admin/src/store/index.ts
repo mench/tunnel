@@ -15,10 +15,15 @@ export const initialState: State = {
         selected: null,
         loadingRequests: false,
         loadedRequests: false,
+        loadingMore: false,
         users:[],
         openUsers:false
     },
-    requests: []
+    requests: {
+        total:0,
+        data:[],
+        page:1
+    }
 };
 
 export function configureStore() {

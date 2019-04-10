@@ -33,7 +33,22 @@ export class Server {
         this.manager = new TunnelManager();
         this.proxy = httpProxy.createProxyServer({ ws: true });
         this.proxy.on('error',this.doError);
-        this.wss = new WebSocket.Server({ noServer: true });
+        this.wss = new WebSocket.Server({
+            noServer: true,
+            perMessageDeflate: {
+                zlibDeflateOptions: {
+                    chunkSize: 1024,
+                    memLevel: 7,
+                    level: 3
+                },
+                clientNoContextTakeover: true, // Defaults to negotiated value.
+                serverNoContextTakeover: true, // Defaults to negotiated value.
+                serverMaxWindowBits: 10, // Defaults to negotiated value.
+                concurrencyLimit: 10, // Limits zlib concurrency for perf.
+                threshold: 1024 // Size (in bytes) below which messages
+                // should not be compressed.
+            }
+        });
         this.proxyRequests = new ProxyRequests(this);
         if( this.config.admin ){
             this.statics = new statics.Server(this.config.admin);

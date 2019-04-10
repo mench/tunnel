@@ -19,6 +19,7 @@ export const getSelectedRequests = createSelector(
     (state) => {
         return state
             .requests
+            .data
             .filter(r => r.tunnel.id === state.app.selected)
             .sort((a,b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }

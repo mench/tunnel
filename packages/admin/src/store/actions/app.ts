@@ -31,3 +31,7 @@ export const clearRequests = (subdomain) => ({
     type: ActionType.FLUSH,
     payload:subdomain
 });
+export const loadRequests = (subdomain) => ({
+    type: ActionType.LOAD_REQUESTS,
+    payload:subdomain
+});

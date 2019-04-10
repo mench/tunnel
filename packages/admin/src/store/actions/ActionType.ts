@@ -18,5 +18,7 @@ export enum ActionType {
     FLUSH = 'FLUSH',
     CLEAR = 'CLEAR',
     REQUESTS = 'REQUESTS',
+    LOAD_REQUESTS = 'LOAD_REQUESTS',
+    LOADED_REQUESTS = 'LOADED_REQUESTS',
     REQUEST = 'REQUEST',
 }

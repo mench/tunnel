@@ -46,8 +46,13 @@ export interface State {
         selected:string,
         loadingRequests:boolean,
         loadedRequests:boolean,
+        loadingMore:boolean,
         tunnels:Tunnel[],
         openUsers:boolean
     }
-    requests:ReqInfo[]
+    requests:{
+        total:number,
+        data:ReqInfo[],
+        page:number
+    }
 }
