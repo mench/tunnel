@@ -32,6 +32,7 @@ export class Server {
         this.config = config;
         this.manager = new TunnelManager();
         this.proxy = httpProxy.createProxyServer({ ws: true });
+        this.proxy.on('error',this.doError);
         this.wss = new WebSocket.Server({ noServer: true });
         this.proxyRequests = new ProxyRequests(this);
         if( this.config.admin ){
@@ -71,8 +72,10 @@ export class Server {
         return this
     }
 
-    async doError(err){
-        console.error(err)
+    async doError(err:Error,req: http.IncomingMessage, res: http.ServerResponse){
+        console.error(err.message,req.headers['host']);
+        res.writeHead(502);
+        res.end('Bad Gateway');
     }
 
     get id(): Pattern<any> {

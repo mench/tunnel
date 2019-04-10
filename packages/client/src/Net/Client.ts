@@ -120,6 +120,7 @@ export class Client {
 
     onServiceSocketError(error) {
         this.logger.debug('serviceSocket:onError', error)
-        this.relaySocket.end()
+        this.relaySocket.end();
+        console.log(`\u{1b}[${31}m${"connection refused:"}\u{1b}[0m`,error.message);
     }
 }

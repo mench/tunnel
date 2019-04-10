@@ -139,7 +139,6 @@ export class ProxyRequests {
         });
         req.on('end', function () {
             info.req.body = Buffer.concat(chunks).toString('base64');
-            console.info("Request Complete", info.id);
         });
     }
 
