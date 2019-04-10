@@ -1,8 +1,9 @@
 import {logger, LoggerInterface} from "@tunnels/common";
 import {Tunnel}                  from "./Tunnel";
 import * as getAvailablePort     from "get-port";
+import {makeRange}               from "get-port";
 
-import {RelayServer}             from "./Net";
+import {RelayServer} from "./Net";
 
 
 export class TunnelManager {
@@ -19,8 +20,8 @@ export class TunnelManager {
 
     async newTunnel(id, username) {
         this.logger.debug(`newTunnel - start`, id);
-        const internetPort = await getAvailablePort();
-        const relayPort = await getAvailablePort();
+        const internetPort = await getAvailablePort({port:makeRange(30000,35000)});
+        const relayPort = await getAvailablePort({port:makeRange(35001,40000)});
         const relayOptions = {};
         const relay = new RelayServer({ relayPort, internetPort }, relayOptions);
         const tunnel = new Tunnel(id, internetPort, relay, username);
