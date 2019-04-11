@@ -89,8 +89,10 @@ export class Server {
 
     async doError(err:Error,req: http.IncomingMessage, res: http.ServerResponse){
         console.error(err.message,req.headers['host']);
-        res.writeHead(502);
-        res.end('Bad Gateway');
+        if( res instanceof http.ServerResponse ){
+            res.writeHead(502);
+            res.end('Bad Gateway');
+        }
     }
 
     get id(): Pattern<any> {
