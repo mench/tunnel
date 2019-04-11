@@ -1,3 +1,6 @@
+##WARNING 
+The intended consumers of this repository are Mamble Inc.
+
 # tunnel
 
 Tunnel exposes your localhost to the world.
