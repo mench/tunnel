@@ -19,7 +19,7 @@
   "types": "./index.d.ts",
   "scripts": {
     "build": "tsc",
-    "connect": "ts-node ./src/index connect --port=3001 --domain=sites.li:10443 --subdomain=test --auth=armen:NC6aeiZPKmjioc9y68KW3",
+    "connect": "ts-node ./src/index connect --port=3001 --subdomain=test",
     "serve": "ts-node ./src/index serve",
     "release": "npm publish --registry=http://packs.sites.li"
   }
