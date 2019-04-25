@@ -107,8 +107,7 @@ export class Server {
     }
 
     public getProxyUrl(internetPort) {
-        const { domain } = this.config;
-        return `${domain}:${internetPort}`;
+        return `0.0.0.0:${internetPort}`;
     }
 
     protected basicAuth(req: http.IncomingMessage) {

@@ -2,6 +2,9 @@ import * as optimist from "optimist";
 import {Client}      from "@tunnels/client";
 import {toBool}      from "@tunnels/common";
 import {Paint}       from "./Paint";
+import {homedir}     from "os"
+import * as Fs       from 'fs';
+import * as Path     from 'path';
 
 export class ClientCli {
 
@@ -41,29 +44,42 @@ export class ClientCli {
             console.error('port is required');
             process.exit();
         }
+        let auth = argv.auth;
+        const configPath = Path.resolve(`${homedir()}/tunnel.${argv.domain}.json`);
+        if (Fs.existsSync(configPath)) {
+            const { user } = JSON.parse(Fs.readFileSync(configPath, 'utf8'));
+            auth = user;
+        }
+
+        if( !auth ){
+            this.help();
+            console.error('auth is required');
+            process.exit();
+        }
 
         const client = new Client({
-            port:argv.port,
-            host:argv.host,
-            auth:argv.auth,
-            domain:argv.domain,
-            ssl:toBool(argv.secure),
-            subdomain:argv.subdomain
+            port: argv.port,
+            host: argv.host,
+            auth: auth,
+            domain: argv.domain,
+            ssl: toBool(argv.secure),
+            subdomain: argv.subdomain
         });
+
         await client.create();
         console.info(Paint.cyan("Forwarding\n"));
-        console.info(Paint.bold("http : "),client.http,'-->',`localhost:${client.port}`);
-        console.info(Paint.bold("https: "),client.https,'-->',`localhost:${client.port}`);
-        console.info(Paint.bold("admin: "),`http${client.ssl ? 's' : ''}://${client.domain}`);
+        console.info(Paint.bold("http : "), client.http, '-->', `localhost:${client.port}`);
+        console.info(Paint.bold("https: "), client.https, '-->', `localhost:${client.port}`);
+        console.info(Paint.bold("admin: "), `http${client.ssl ? 's' : ''}://${client.domain}`);
         console.table([
             {
-                domain:client.domain,
-                internetPort:client.internetPort,
-                relayPort:client.relayPort,
-                createdAt:new Date(client.createdAt).toLocaleString()
+                domain: client.domain,
+                internetPort: client.internetPort,
+                relayPort: client.relayPort,
+                createdAt: new Date(client.createdAt).toLocaleString()
             }
         ]);
-        const close = async ()=>{
+        const close = async () => {
             await client.close();
             console.log('  Tunnel closed.')
             process.exit(0)
@@ -72,7 +88,7 @@ export class ClientCli {
         process.on('SIGTERM', close);
     }
 
-    public help(){
+    public help() {
         this.options.showHelp();
     }
 }
