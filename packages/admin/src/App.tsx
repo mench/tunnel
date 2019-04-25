@@ -1,18 +1,19 @@
-import React, {PureComponent}                                            from 'react';
-import {Fragment}                                                        from 'react';
-import {Layout, Menu, Icon, Row, Col, Statistic, Card, Dropdown, Button} from 'antd';
-import {Avatar}                                                          from 'antd';
-import {Table}                                                           from 'antd';
-import {Badge}                                                    from 'antd';
-import {PageHeader}                                               from 'antd';
-import Requests                                                   from "./components/Requests";
-import {connect}                                                  from "react-redux";
-import {State, Tunnel}                                            from "./types/State";
-import {Loader}                                                   from "./components/Loader";
-import {clearRequests, loadRequests, logout, select, toggleUsers} from "./store/actions/app";
-import {getSelectedTunnel}                                        from "./store/selectors/app";
-import Login                                                      from "./components/Login";
-import Users                                                      from "./components/Users";
+import React, {PureComponent}                                                   from 'react';
+import {Fragment}                                                               from 'react';
+import {Layout, Menu, Icon, Row, Col, Statistic, Card, Dropdown, Button, Modal} from 'antd';
+import {Avatar}                                                                 from 'antd';
+import {Table}                                                                  from 'antd';
+import {Badge}                                                                  from 'antd';
+import {PageHeader}                                                             from 'antd';
+import Requests                                                                 from "./components/Requests";
+import {connect}                                                                from "react-redux";
+import {State, Tunnel}                                                          from "./types/State";
+import {Loader}                                                                 from "./components/Loader";
+import {clearRequests, loadRequests, logout, select, toggleUsers}               from "./store/actions/app";
+import {getSelectedTunnel}                                                      from "./store/selectors/app";
+import Login                                                                    from "./components/Login";
+import Users                                                                    from "./components/Users";
+import {Encoder}                                                                from "./utils/Encoder";
 
 const {
     Content, Sider,
@@ -40,6 +41,23 @@ class App extends PureComponent<{
 
     onSelect = ({ key }) => {
         this.props.select(key);
+    };
+
+    closeConnection = (tunnelId) => {
+        Modal.confirm({
+            title: 'Do you Want to delete this connection?',
+            content: tunnelId,
+            async onOk() {
+                const url = process.env.NODE_ENV === 'production' ? `https://${window.location.hostname}` : 'https://sites.li:10443';
+                const { username, password } = JSON.parse(localStorage.getItem('tunnel-auth'));
+                await fetch(`${url}/api/tunnels/${tunnelId}`, {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Basic ${Encoder.toBase64(`${username}:${password}`)}`
+                    }
+                })
+            }
+        });
     };
 
     render() {
@@ -140,6 +158,11 @@ class App extends PureComponent<{
                                         <Col span={4}>
                                             <Statistic title="Relay Port" value={selected.relayPort}/>
                                         </Col>
+                                        <Col span={4}>
+                                            <Button type="danger"
+                                                    onClick={() => this.closeConnection(selected.id)}><Icon
+                                                type="close-circle"/> Close Connection</Button>
+                                        </Col>
                                     </Row>
                                 </Card>
 
@@ -148,8 +171,9 @@ class App extends PureComponent<{
                             {(loadingRequests || loadedRequests) &&
                             <React.Fragment>
                                 <div>&nbsp;</div>
-                                <div style={{ paddingLeft: 24,paddingRight:24, background: '#fff', height: 'auto' }}>
-                                    <Requests onClear={()=>clearRequests(selected.id)} onLoadMore={()=>loadRequests(selected.id)}/>
+                                <div style={{ paddingLeft: 24, paddingRight: 24, background: '#fff', height: 'auto' }}>
+                                    <Requests onClear={() => clearRequests(selected.id)}
+                                              onLoadMore={() => loadRequests(selected.id)}/>
                                 </div>
                             </React.Fragment>
                             }

@@ -51,7 +51,7 @@ const createUserForm = (id) => {
                     <Button
                         onClick={() => {
                             Modal.confirm({
-                                title: 'Do you Want to delete these user?',
+                                title: 'Do you Want to delete this user?',
                                 content: props.username,
                                 onOk() {
                                     props.delete(props.username)
