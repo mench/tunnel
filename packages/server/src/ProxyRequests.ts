@@ -1,7 +1,13 @@
-import {Server}       from "./Server";
-import * as WebSocket from 'ws';
+import {Server}                  from "./Server";
+import * as WebSocket            from 'ws';
+import * as http                 from 'http';
+import * as url                  from 'url';
+import {logger, LoggerInterface} from "@tunnels/common";
 
 export class ProxyRequests {
+
+    @logger()
+    logger: LoggerInterface;
 
     private requests = new WeakMap();
 
@@ -95,6 +101,9 @@ export class ProxyRequests {
                             break;
                         case 'flush':
                             this.clear(Object(message.data).id);
+                            break;
+                        case 'replay':
+                            this.replay(Object(message.data).id);
                             break;
                     }
                 } catch (e) {
@@ -192,5 +201,36 @@ export class ProxyRequests {
             data: [],
             page: 1
         });
+    }
+
+    public replay(id: string) {
+        this.logger.info(`replaying: ${id}`);
+        const info = this.logs.find(log => log.id === id);
+        if (!info) {
+            return;
+        }
+        const { hostname, port } = url.parse('http://' + info.req.headers.host);
+        const options = {
+            hostname,
+            port:this.server.config.port,
+            path: info.req.path,
+            method: info.req.method,
+            headers: info.req.headers
+        };
+        const req = http.request(options, (res) => {
+            res.on('end', (data) => {
+                this.logger.info(`replayed: ${id}`);
+            });
+            res.on('error', (err) => {
+                this.logger.error(err.message);
+            });
+        });
+        req.on('error', (err) => {
+            this.logger.error(err.message);
+        });
+        if (info.req.body) {
+            req.write(Buffer.from(info.req.body, 'base64'));
+        }
+        req.end();
     }
 }

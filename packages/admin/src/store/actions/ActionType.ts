@@ -17,6 +17,7 @@ export enum ActionType {
     SELECT = 'SELECT',
     FLUSH = 'FLUSH',
     CLEAR = 'CLEAR',
+    REPLAY = 'REPLAY',
     REQUESTS = 'REQUESTS',
     LOAD_REQUESTS = 'LOAD_REQUESTS',
     LOADED_REQUESTS = 'LOADED_REQUESTS',

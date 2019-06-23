@@ -35,3 +35,7 @@ export const loadRequests = (subdomain) => ({
     type: ActionType.LOAD_REQUESTS,
     payload:subdomain
 });
+export const doReplay = (id) => ({
+    type: ActionType.REPLAY,
+    payload:id
+});

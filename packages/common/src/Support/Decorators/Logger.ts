@@ -40,9 +40,7 @@ export class Logger implements LoggerInterface{
 export function logger(name?: string) {
     return (target, key) => {
         return Object.defineProperty(target,key,{
-            get(){
-                return new Logger(name||target.constructor.name)
-            }
+            value:new Logger(name||target.constructor.name)
         })
     }
 }

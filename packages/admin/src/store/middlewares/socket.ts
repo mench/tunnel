@@ -96,6 +96,14 @@ export function createSocketMiddleware() {
                         }
                     });
                     break;
+                case ActionType.REPLAY:
+                    ws.send({
+                        event: 'replay',
+                        data: {
+                            id:action.payload
+                        }
+                    });
+                    break;
                 case ActionType.SELECT:
                     ws.send({
                         event: 'select',

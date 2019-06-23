@@ -6,6 +6,7 @@ import {connect}              from "react-redux";
 import {ReqInfo, State}       from "../types/State";
 import {getSelectedRequests}  from "../store/selectors/app";
 import {Time}                 from "../utils/Time";
+import {doReplay}             from "../store/actions/app";
 
 class Requests extends PureComponent<{
     loading: boolean,
@@ -14,7 +15,8 @@ class Requests extends PureComponent<{
     requests: ReqInfo[],
     total: number,
     onClear: () => any
-    onLoadMore: () => any
+    onLoadMore: () => any,
+    doReplay: (id) => any,
 }> {
 
     renderHeader = () => {
@@ -37,7 +39,7 @@ class Requests extends PureComponent<{
         }
         return (
             <div style={{ textAlign: 'center' }}>
-                <a href="javascript:;" onClick={()=>this.props.onLoadMore()}>Load more</a>
+                <a href="javascript:;" onClick={() => this.props.onLoadMore()}>Load more</a>
             </div>
         )
     };
@@ -49,7 +51,7 @@ class Requests extends PureComponent<{
                 className="context-table"
                 showHeader={true}
                 pagination={false}
-                loading={loading||loadingMore}
+                loading={loading || loadingMore}
                 title={this.renderHeader}
                 footer={this.renderFooter}
                 expandedRowRender={(record: any) => <Info {...requests.find(i => i.id === record.key)} />}
@@ -88,6 +90,18 @@ class Requests extends PureComponent<{
                     },
                     { title: "Duration", dataIndex: 'duration' },
                     { title: "Happened", dataIndex: 'happened' },
+                    {
+                        title: "",
+                        dataIndex: 'key',
+                        render: (value) => (
+                            <Button
+                                onClick={() => this.props.doReplay(value)}
+                                type="primary"
+                            >
+                                Replay
+                            </Button>
+                        )
+                    },
                 ]}
                 dataSource={(loaded ? requests : []).map(info => (
                     {
@@ -109,4 +123,4 @@ export default connect((state: State) => ({
     loadingMore: state.app.loadingMore,
     requests: getSelectedRequests(state),
     total: state.requests.total
-}))(Requests)
+}), { doReplay })(Requests)
