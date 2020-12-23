@@ -1,4 +1,4 @@
-import {logger, LoggerInterface} from "@tunnels/common";
+import {logger, LoggerInterface} from "@relcu/tunnel-common";
 import {Listener}                from "./Listener";
 
 export class RelayServer {

@@ -1,9 +1,12 @@
 {
-  "name": "@tunnels/server",
+  "name": "@relcu/tunnel-server",
   "version": "1.1.0",
   "description": "Tunnel server",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
-    "@tunnels/common": "*",
+    "@relcu/tunnel-common": "*",
     "debug": "^4.1.1",
     "get-port": "^5.0.0",
     "http-proxy": "^1.17.0",
@@ -21,6 +24,6 @@
   "types": "./index.d.ts",
   "scripts": {
     "build": "tsc",
-    "release": "npm publish --registry=http://packs.sites.li"
+    "release": "npm publish"
   }
 }

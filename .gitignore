@@ -33,6 +33,8 @@ yarn-error.log*
 
 /.idea
 /.vscode
+/.npmrc
+/**/*.npmrc
 *.iml
 *.ipr
 *.iws

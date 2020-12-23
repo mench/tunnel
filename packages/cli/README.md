@@ -6,7 +6,7 @@ Tunnel exposes your localhost to the world.
 ## installation ##
 
 ```
-npm install -g @tunnels/cli --registry=http://packs.sites.li
+npm install -g @relcu/tunnel-cli --registry=http://packs.sites.li
 ```
 
 
@@ -64,6 +64,6 @@ tunnel serve --config=./your/path/config.json
 ```
 
 To see the requests and/or manage your users 
-you can install ```npm install -g @tunnels/admin --registry=http://packs.sites.li``` on your server.
+you can install ```npm install -g @relcu/tunnel-admin``` on your server.
 
 

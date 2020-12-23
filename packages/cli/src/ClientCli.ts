@@ -1,6 +1,6 @@
 import * as optimist from "optimist";
-import {Client}      from "@tunnels/client";
-import {toBool}      from "@tunnels/common";
+import {Client}      from "@relcu/tunnel-client";
+import {toBool}      from "@relcu/tunnel-common";
 import {Paint}       from "./Paint";
 import {homedir}     from "os"
 import * as Fs       from 'fs';

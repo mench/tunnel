@@ -1,5 +1,5 @@
-import {Signal, signal}           from "@tunnels/common";
-import {logger, LoggerInterface,} from "@tunnels/common";
+import {Signal, signal}           from "@relcu/tunnel-common";
+import {logger, LoggerInterface,} from "@relcu/tunnel-common";
 import {Client}                   from "./Client";
 
 export class RelayClient {

@@ -1,7 +1,7 @@
-import {logger, LoggerInterface} from "@tunnels/common";
+import {logger, LoggerInterface} from "@relcu/tunnel-common";
 import {Socket}                  from 'net';
-import {signal}                  from "@tunnels/common";
-import {Signal}                  from "@tunnels/common";
+import {signal}                  from "@relcu/tunnel-common";
+import {Signal}                  from "@relcu/tunnel-common";
 
 
 export class Client {

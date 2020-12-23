@@ -1,8 +1,8 @@
 import * as fs                   from 'fs';
 import * as net                  from 'net';
 import * as tls                  from 'tls';
-import {Signal, signal}          from "@tunnels/common";
-import {logger, LoggerInterface} from "@tunnels/common";
+import {Signal, signal}          from "@relcu/tunnel-common";
+import {logger, LoggerInterface} from "@relcu/tunnel-common";
 import {Server}                  from 'net';
 import {Client}                  from "./Client";
 

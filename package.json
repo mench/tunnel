@@ -1,7 +1,10 @@
 {
-  "name": "tunnels",
+  "name": "relcu",
   "version": "1.0.0",
   "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
   "workspaces":[
     "packages/*"
   ],
@@ -12,18 +15,18 @@
   "scripts": {
     "serve": "tunnel serve --config=./config.json",
 
-    "build-server": "yarn workspace @tunnels/server run build",
-    "build-client": "yarn workspace @tunnels/client run build",
-    "build-common": "yarn workspace @tunnels/common run build",
-    "build-admin": "yarn workspace @tunnels/admin run build",
-    "build-cli": "yarn workspace @tunnels/cli run build",
+    "build-server": "yarn workspace @relcu/tunnel-server run build",
+    "build-client": "yarn workspace @relcu/tunnel-client run build",
+    "build-common": "yarn workspace @relcu/tunnel-common run build",
+    "build-admin": "yarn workspace @relcu/tunnel-admin run build",
+    "build-cli": "yarn workspace @relcu/tunnel-cli run build",
     "build": "yarn run build-common && yarn run build-server && yarn run build-client && yarn run build-cli && yarn run build-admin",
 
-    "release-server": "yarn workspace @tunnels/server run release",
-    "release-client": "yarn workspace @tunnels/client run release",
-    "release-common": "yarn workspace @tunnels/common run release",
-    "release-admin": "yarn workspace @tunnels/admin run release",
-    "release-cli": "yarn workspace @tunnels/cli run release",
+    "release-server": "yarn workspace @relcu/tunnel-server run release",
+    "release-client": "yarn workspace @relcu/tunnel-client run release",
+    "release-common": "yarn workspace @relcu/tunnel-common run release",
+    "release-admin": "yarn workspace @relcu/tunnel-admin run release",
+    "release-cli": "yarn workspace @relcu/tunnel-cli run release",
     "release": "yarn run release-common && yarn run release-server && yarn run release-client && yarn run release-cli && yarn run release-admin"
   }
 }

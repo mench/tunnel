@@ -1,11 +1,11 @@
 import * as http                 from 'http';
 import * as https                from 'https';
-import {logger, LoggerInterface} from "@tunnels/common";
+import {logger, LoggerInterface} from "@relcu/tunnel-common";
 import {TunnelManager}           from "./TunnelManager";
 import {Config}                  from "./Config";
 import * as httpProxy            from 'http-proxy';
-import {Pattern}                 from "@tunnels/common";
-import {writeJson}               from "@tunnels/common";
+import {Pattern}                 from "@relcu/tunnel-common";
+import {writeJson}               from "@relcu/tunnel-common";
 import {ProxyRequests}           from "./ProxyRequests";
 import * as WebSocket            from "ws"
 import {UnauthorizedError}       from "./Error/UnauthorizedError";

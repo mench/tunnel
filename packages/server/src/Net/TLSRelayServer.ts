@@ -2,7 +2,7 @@ import * as fs                   from 'fs';
 import * as tls                  from 'tls';
 import {RelayServer}             from "./RelayServer";
 import {Listener}                from "./Listener";
-import {logger, LoggerInterface} from "@tunnels/common";
+import {logger, LoggerInterface} from "@relcu/tunnel-common";
 
 export class TLSInternetListener extends Listener {
 

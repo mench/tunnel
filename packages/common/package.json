@@ -1,7 +1,11 @@
 {
-  "name": "@tunnels/common",
+  "name": "@relcu/tunnel-common",
   "version": "1.2.0",
+  "private": false,
   "description": "Tunnel client",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "debug": "^4.1.1"
   },
@@ -13,6 +17,6 @@
   },
   "scripts": {
     "build":"tsc",
-    "release": "npm publish --registry=http://packs.sites.li"
+    "release": "npm publish"
   }
 }

@@ -1,10 +1,13 @@
 {
-  "name": "@tunnels/cli",
+  "name": "@relcu/tunnel-cli",
   "version": "1.2.0",
   "description": "Tunnel Cli",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
-    "@tunnels/client": "*",
-    "@tunnels/server": "*",
+    "@relcu/tunnel-client": "*",
+    "@relcu/tunnel-server": "*",
     "@types/optimist": "^0.0.29",
     "optimist": "^0.6.1"
   },
@@ -21,6 +24,6 @@
     "build": "tsc",
     "connect": "ts-node ./src/index connect --port=3001 --subdomain=test",
     "serve": "ts-node ./src/index serve",
-    "release": "npm publish --registry=http://packs.sites.li"
+    "release": "npm publish"
   }
 }

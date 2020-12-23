@@ -1,4 +1,4 @@
-import {logger, LoggerInterface} from "@tunnels/common";
+import {logger, LoggerInterface} from "@relcu/tunnel-common";
 import {URL}                     from 'url';
 import {RequestOptions}          from 'http';
 import * as Http                 from 'http';

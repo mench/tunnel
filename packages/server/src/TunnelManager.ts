@@ -1,4 +1,4 @@
-import {logger, LoggerInterface} from "@tunnels/common";
+import {logger, LoggerInterface} from "@relcu/tunnel-common";
 import {Tunnel}                  from "./Tunnel";
 import * as getAvailablePort     from "get-port";
 import {makeRange}               from "get-port";

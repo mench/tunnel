@@ -2,7 +2,7 @@ import {Server}                  from "./Server";
 import * as WebSocket            from 'ws';
 import * as http                 from 'http';
 import * as url                  from 'url';
-import {logger, LoggerInterface} from "@tunnels/common";
+import {logger, LoggerInterface} from "@relcu/tunnel-common";
 
 export class ProxyRequests {
 

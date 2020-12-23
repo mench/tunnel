@@ -1,5 +1,5 @@
 import * as optimist    from "optimist";
-import {Config, Server} from "@tunnels/server";
+import {Config, Server} from "@relcu/tunnel-server";
 import * as Fs          from 'fs';
 import * as Path        from 'path';
 import {Paint}          from "./Paint";
@@ -19,7 +19,7 @@ export class ServerCli {
 
     private getAdminDir() {
         try {
-            return Path.dirname(require.resolve('@tunnels/admin/build/index.html'));
+            return Path.dirname(require.resolve('@relcu/tunnel-admin/build/index.html'));
         } catch (e) {
             return null;
         }
