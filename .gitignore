@@ -9,7 +9,6 @@ node_modules/
 *.ipr
 *.iws
 *.log
-yarn.lock
 users.json
 config.json
 
