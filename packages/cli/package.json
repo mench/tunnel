@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@types/node": "^11.13.0",
+    "ts-node": "^9.1.1",
     "typescript": "^3.4.2"
   },
   "bin": {
@@ -22,7 +23,7 @@
   "types": "./index.d.ts",
   "scripts": {
     "build": "tsc",
-    "connect": "ts-node ./src/index connect --port=3001 --subdomain=test",
+    "connect": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node ./src/index connect --domain=tunnel.relcu.dev --secure=true --auth=armen:'$123456$' --host=client.quz.li --port=443 --subdomain=gago",
     "serve": "ts-node ./src/index serve",
     "release": "npm publish"
   }

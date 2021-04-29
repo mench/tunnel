@@ -1,85 +1,85 @@
-import {logger, LoggerInterface} from "@relcu/tunnel-common";
-import {Socket}                  from 'net';
-import {signal}                  from "@relcu/tunnel-common";
-import {Signal}                  from "@relcu/tunnel-common";
-
+import { logger, LoggerInterface } from "@relcu/tunnel-common";
+import { Socket }                  from "net";
+import { signal }                  from "@relcu/tunnel-common";
+import { Signal }                  from "@relcu/tunnel-common";
 
 export class Client {
 
-    @logger()
-    readonly logger: LoggerInterface;
+  @logger()
+  readonly logger: LoggerInterface;
 
-    @signal
-    readonly onClose:Signal<()=>any>;
+  @signal
+  readonly onClose: Signal<() => any>;
 
-    public socket: Socket;
-    public buffer: any[];
-    public pairedSocket: any;
+  public socket: Socket;
+  public buffer: any[];
+  public pairedSocket: any;
 
-    constructor(opts = { socket: null }, private options: { bufferData?: any, timeout?: any } = {}) {
+  constructor(opts = { socket: null }, private options: { bufferData?: any, timeout?: any } = {}) {
 
-        this.logger.debug('constructor: %o', { options });
+    this.logger.debug("constructor: %o", { options });
 
-        this.socket = opts.socket;
-        this.options = options;
+    this.socket = opts.socket;
+    this.options = options;
 
-        if (options.bufferData) {
-            this.buffer = []
-        }
-        this.pairedSocket = undefined;
-        this.timeout();
-
-        this.socket.on('data', this.onSocketData.bind(this))
-        this.socket.on('close', this.onSocketClose.bind(this))
+    if (options.bufferData) {
+      this.buffer = [];
     }
+    this.pairedSocket = undefined;
+    this.timeout();
 
-    onSocketData(data) {
-        this.logger.debug('socket:onData', { bufferData: this.options.bufferData });
-        if (this.options.bufferData) {
-            this.buffer[this.buffer.length] = data
-            this.logger.debug('socket:onData - data', { bufferLength: this.buffer.length })
-            return;
-        }
-        try {
-            this.pairedSocket.write(data)
-        } catch (err) {
-            this.logger.error('socket:onData:writeError', err)
-        }
+    this.socket.on("data", this.onSocketData.bind(this));
+    this.socket.on("close", this.onSocketClose.bind(this));
+    this.socket.on("error", (e) => console.error(e));
+  }
+
+  onSocketData(data) {
+    this.logger.debug("socket:onData", { bufferData: this.options.bufferData });
+    if (this.options.bufferData) {
+      this.buffer[ this.buffer.length ] = data;
+      this.logger.debug("socket:onData - data", { bufferLength: this.buffer.length });
+      return;
     }
+    try {
+      this.pairedSocket.write(data);
+    } catch (err) {
+      this.logger.error("socket:onData:writeError", err);
+    }
+  }
 
-    onSocketClose(hadError) {
-        this.logger.debug('socket:onClose', { hadError, pairedSocket: !!this.pairedSocket })
-        if (this.pairedSocket !== undefined) {
-            this.pairedSocket.destroy()
-        }
+  onSocketClose(hadError) {
+    this.logger.debug("socket:onClose", { hadError, pairedSocket: !!this.pairedSocket });
+    if (this.pairedSocket !== undefined) {
+      this.pairedSocket.destroy();
+    }
+    this.onClose();
+  }
+
+  timeout() {
+    this.logger.debug("timeout", { timeout: this.options.timeout });
+    if (!this.options.timeout) {
+      return;
+    }
+    setTimeout(() => {
+      this.logger.debug("timeout:setTimeout", { bufferData: !!this.options.bufferData });
+      if (this.options.bufferData) {
+        this.socket.destroy();
         this.onClose();
-    }
+      }
+    }, this.options.timeout);
+  }
 
-    timeout() {
-        this.logger.debug('timeout', { timeout: this.options.timeout })
-        if (!this.options.timeout) {
-            return
+  writeBuffer() {
+    this.logger.debug("writeBuffer");
+    if (this.options.bufferData && this.buffer.length > 0) {
+      try {
+        for (let i = 0; i < this.buffer.length; i++) {
+          this.pairedSocket.write(this.buffer[ i ]);
         }
-        setTimeout(() => {
-            this.logger.debug('timeout:setTimeout', { bufferData: !!this.options.bufferData })
-            if (this.options.bufferData) {
-                this.socket.destroy()
-                this.onClose();
-            }
-        }, this.options.timeout)
+      } catch (ex) {
+      }
+      this.buffer.length = 0;
     }
-
-    writeBuffer() {
-        this.logger.debug('writeBuffer')
-        if (this.options.bufferData && this.buffer.length > 0) {
-            try {
-                for (let i = 0; i < this.buffer.length; i++) {
-                    this.pairedSocket.write(this.buffer[i])
-                }
-            } catch (ex) {
-            }
-            this.buffer.length = 0
-        }
-        this.options.bufferData = false
-    }
+    this.options.bufferData = false;
+  }
 }

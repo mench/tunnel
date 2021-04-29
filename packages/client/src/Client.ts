@@ -37,7 +37,7 @@ export class Client {
         this.url = `http${this.ssl ? 's' : ''}://${auth}@${domain}`;
         this.https = `https://${subdomain}.${domain}`;
         this.http = `http://${subdomain}.${domain}`;
-        this.endpoint = new URL(`${this.url}/api/tunnels/${this.subdomain}`);
+        this.endpoint = new URL(`${this.url}/api/tunnels/${this.subdomain}?secure=${this.ssl}&host=${this.host}`);
         this.logger.debug(`created`, this)
     }
 

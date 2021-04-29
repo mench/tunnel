@@ -1,6 +1,6 @@
 {
   "name": "@relcu/tunnel-server",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Tunnel server",
   "publishConfig": {
     "access": "public"
