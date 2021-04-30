@@ -23,7 +23,7 @@
   "types": "./index.d.ts",
   "scripts": {
     "build": "tsc",
-    "connect": "NODE_TLS_REJECT_UNAUTHORIZED=0 ts-node ./src/index connect --domain=tunnel.relcu.dev --secure=true --auth=armen:'$123456$' --host=client.quz.li --port=443 --subdomain=gago",
+    "connect": "ts-node ./src/index connect --domain=tunnel.relcu.dev --secure=true --auth=username:password --host=client.quz.li --port=443 --subdomain=subdomain",
     "serve": "ts-node ./src/index serve",
     "release": "npm publish"
   }
